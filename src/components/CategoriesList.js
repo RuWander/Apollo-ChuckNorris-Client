@@ -3,7 +3,6 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import CategoriesItem from './CategoriesItem'
 
-
 const CATEGORY_QUERY = gql`
   query CategoryQuery {
     categories
