@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import CategoriesItem from './CategoriesItem'
+import CategoriesItem from './CategoriesItem';
 
 const CATEGORY_QUERY = gql`
   query CategoryQuery {
@@ -9,10 +9,10 @@ const CATEGORY_QUERY = gql`
   }
 `;
 
-
 export class CategoriesList extends Component {
 
   render() {
+
     return (
       <Fragment>
         <h1>Categories</h1>
