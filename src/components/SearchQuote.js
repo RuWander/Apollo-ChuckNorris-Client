@@ -13,24 +13,10 @@ query searchQuote($search: String) {
 }
 `;
 
-
 function SearchQuote(props) {
 
-  function handleChange(e) {
-    console.log('Change happened')
-    debounceFunction()
-  }
-
-  const debounceFunction = debounce(() => {
-    console.log('debounce')
-    searchQuote({ variables: { search: searchString.value } });
-}, 1000)
- 
-  let searchString;
-  const[ searchQuote, { data }] = useLazyQuery(SEARCH_QUOTE);
-
-  if (data && data.searchQuote) {
-    return (<div>
+  const SearchForm = () => {
+    return (
       <form
         onSubmit={(e) => {
           console.log(e)
@@ -46,29 +32,57 @@ function SearchQuote(props) {
 
         <button type="submit">search</button>
       </form>
-      { data.searchQuote.map(q => <p key={q.id}>{q.value}</p> ) }
-    </div>)
+    )
   }
- 
+
+  const handleChange = (e) => {
+    console.log('Change happened')
+    debounceFunction()
+  }
+
+  const debounceFunction = debounce(() => {
+    console.log('debounce')
+    searchQuote({ variables: { search: searchString.value } });
+  }, 1000)
+
+  let searchString;
+  const [searchQuote, { data, error, loading }] = useLazyQuery(SEARCH_QUOTE);
+
+  if (error) {
+    return (
+      <div>
+        <SearchForm />
+        <h3>Some error occurred... Sorry about that, please try again soon</h3>
+        <h5>{error.message}</h5>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <SearchForm />
+        <h1>Loading...</h1>
+      </div>
+
+    )
+  }
+
+  if (data && data.searchQuote) {
+    return (
+      <div>
+        <SearchForm />
+        {data.searchQuote.map(q => <p key={q.id}>{q.value}</p>)}
+      </div>
+    )
+  }
 
   return (
     <div>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          searchQuote({ variables: { search: searchString.value } });
-        }}
-      >
-        <input onChange={handleChange}
-          ref={node => {
-            searchString = node;
-          }}
-        />
-
-        <button type="submit">Login</button>
-      </form>
+      <SearchForm />
     </div>
   );
 }
 
 export default SearchQuote
+

@@ -1,6 +1,7 @@
 import React from 'react';
-import {  useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import { Redirect } from 'react-router-dom';
 
 const LOGIN_USER = gql`
 mutation LoginUser($email: String, $password: String) {
@@ -14,38 +15,42 @@ mutation LoginUser($email: String, $password: String) {
 }
 `;
 
-
 function Login(props) {
 
-  let email;
-  let password;
-  const[ login, { data }] = useMutation(LOGIN_USER);
+  const [values, setValues] = React.useState(false)
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value })
+  }
+
+  const [loginUser, { called, loading, data, error }] = useMutation(
+    LOGIN_USER,
+    { variables: { email: values.email, password: values.password } }
+  )
+
+  if (called && loading) return <h1>Loading...</h1>
+
+  if (error) return <h1>Error Message</h1>
 
   if (data) {
-    if(data.login.token) {
-      localStorage.setItem('token', data.login.token)
-      // return props.history.push('/');
-    }
+    localStorage.setItem('token', data.login.token)
+    return <Redirect to="/" />
   }
+
 
   return (
     <div>
       <form
         onSubmit={e => {
           e.preventDefault();
-          login({ variables: { email: email.value, password: password.value } });
-          password.value = '';
+          loginUser();
         }}
       >
-        <input
-          ref={node => {
-            email = node;
-          }}
+        <input name="email"
+          onChange={handleChange('email')}
         />
-        <input
-          ref={node => {
-            password = node;
-          }}
+        <input name="password"
+          onChange={handleChange('password')}
         />
         <button type="submit">Login</button>
       </form>

@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import CategoriesItem from './CategoriesItem';
 
 const CATEGORY_QUERY = gql`
@@ -9,29 +9,35 @@ const CATEGORY_QUERY = gql`
   }
 `;
 
-export class CategoriesList extends Component {
+const CategoriesList = (props) => {
 
-  render() {
+  const { data, loading, error } = useQuery(CATEGORY_QUERY)
+  function logout() {
+      localStorage.removeItem('token')
+      props.history.push("/login");
+  }
 
+  if (loading) {
+    return <h4>Loading..</h4>
+  }
+
+  if (error) {
+    console.log(error)
+    return (
+      <h4> Some Error{error.message}</h4>
+    )
+  }
+
+  if (data) {
     return (
       <Fragment>
+        <button onClick={()=>logout()}>Logout</button>
         <h1>Categories</h1>
-        <Query query={CATEGORY_QUERY}>
-          {
-            ({ loading, error, data }) => {
-              if (loading) return <h4>Loading..</h4>
-              if (error) console.log(error)
-
-              return <Fragment>
-                {
-                  data.categories.map(category => (
-                    <CategoriesItem key={category} category={category} />
-                  ))
-                }
-              </Fragment>
-            }
-          }
-        </Query>
+        {
+          data.categories.map(category => (
+            <CategoriesItem key={category} category={category} />
+          ))
+        }
       </Fragment>
     )
   }
