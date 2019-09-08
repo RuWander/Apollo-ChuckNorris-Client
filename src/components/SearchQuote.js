@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
 import debounce from 'lodash/debounce';
+
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress'
+
+const useStyles = makeStyles(theme => ({
+  progress: {
+    margin: theme.spacing(2),
+  },
+}));
 
 const SEARCH_QUOTE = gql`
 query searchQuote($search: String) {
@@ -14,24 +24,37 @@ query searchQuote($search: String) {
 `;
 
 function SearchQuote(props) {
+  const classes = useStyles();
 
   const SearchForm = () => {
     return (
-      <form
-        onSubmit={(e) => {
-          console.log(e)
-          e.preventDefault();
-          searchQuote({ variables: { search: searchString.value } });
-        }}
-      >
-        <input onChange={handleChange}
-          ref={node => {
-            searchString = node;
-          }}
+      <Fragment>
+        <TextField
+          id="outlined-with-placeholder"
+          label="Just start typing here..."
+          placeholder="Placeholder"
+          margin="normal"
+          variant="outlined"
+          onChange={handleChange}
+  
         />
+        <form
+          onSubmit={(e) => {
+            console.log(e)
+            e.preventDefault();
+            searchQuote({ variables: { search: searchString.value } });
+          }}
+        >
+          <input onChange={handleChange}
+            ref={node => {
+              searchString = node;
+            }}
+          />
 
-        <button type="submit">search</button>
-      </form>
+          <button type="submit">search</button>
+        </form>
+      </Fragment>
+
     )
   }
 
@@ -62,7 +85,8 @@ function SearchQuote(props) {
     return (
       <div>
         <SearchForm />
-        <h1>Loading...</h1>
+        <CircularProgress className={classes.progress} />
+        {/* <h1>Loading...</h1> */}
       </div>
 
     )

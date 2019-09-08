@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
 import CategoriesItem from './CategoriesItem';
 
+
 const CATEGORY_QUERY = gql`
   query CategoryQuery {
     categories
@@ -31,8 +32,8 @@ const CategoriesList = (props) => {
   if (data) {
     return (
       <Fragment>
-        <button onClick={()=>logout()}>Logout</button>
-        <h1>Categories</h1>
+        {/* <button onClick={()=>logout()}>Logout</button> */}
+
         {
           data.categories.map(category => (
             <CategoriesItem key={category} category={category} />
