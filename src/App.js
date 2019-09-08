@@ -43,8 +43,8 @@ function App() {
           <ProtectedRoute exact path='/' component={ CategoriesList } />
           <Route exact path='/login' component={ Login } />
           <Route exact path='/Register' component={ Register } />
-          <Route exact path='/SearchQuote' component={ SearchQuote } />
-          <Route exact path='/category/:category' component={ Quote } />
+          <ProtectedRoute exact path='/SearchQuote' component={ SearchQuote } />
+          <ProtectedRoute exact path='/category/:category' component={ Quote } />
         </div>
       </Router>
 

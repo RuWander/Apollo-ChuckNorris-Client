@@ -4,10 +4,9 @@ import { gql } from 'apollo-boost';
 import { Redirect } from 'react-router-dom';
 
 const REGISTER_USER = gql`
-mutation RegisterUser($username: String, $email: String, $password: String) {
+mutation LoginUser($username: String, $email: String, $password: String) {
   register(username: $username, email: $email, password: $password){
     user {
-      username
       email
       id
     }
@@ -18,65 +17,46 @@ mutation RegisterUser($username: String, $email: String, $password: String) {
 
 function Register(props) {
 
-  let username;
-  let email;
-  let password;
-  const [register, { data, error, loading }] = useMutation(REGISTER_USER);
+  const [values, setValues] = React.useState(false)
 
-  const LoginForm = () => {
-    return (<form
-      onSubmit={e => {
-        e.preventDefault();
-        register({ variables: { username: username.value ,email: email.value, password: password.value } });
-        password.value = '';
-      }}
-    >
-      <input
-        ref={node => {
-          username = node;
-        }}
-      />
-      <input
-        ref={node => {
-          email = node;
-        }}
-      />
-      <input
-        ref={node => {
-          password = node;
-        }}
-      />
-      <button type="submit">Register</button>
-    </form>)
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value })
   }
 
-  if (error) {
-    console.log(error.message)
-    return (
-      <div>
-        <LoginForm />
-        <h5>Some Error Occurred: {error.message}</h5>
-      </div>
+  const [RegisterUser, { called, loading, data, error }] = useMutation(
+    REGISTER_USER,
+    { variables: { username: values.username, email: values.email, password: values.password } }
+  )
 
-    )
-  }
+  if (called && loading) return <h1>Loading...</h1>
 
-  if (loading) {
-    return <h1>Loading...</h1>
-  }
+  if (error) return <h1>Error Message</h1>
 
   if (data) {
-    if (data.register.token) {
-      console.log(data.register.token)
-      localStorage.setItem('token', data.register.token)
-      // return props.history.push('/');
-      return <Redirect to="/" />
-    }
+    localStorage.setItem('token', data.register.token)
+    return <Redirect to="/" />
   }
+
 
   return (
     <div>
-      <LoginForm />
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          RegisterUser();
+        }}
+      >
+        <input name="username"
+          onChange={handleChange('username')}
+        />
+        <input name="email"
+          onChange={handleChange('email')}
+        />
+        <input name="password"
+          onChange={handleChange('password')}
+        />
+        <button type="submit">Login</button>
+      </form>
     </div>
   );
 }
