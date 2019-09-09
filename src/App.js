@@ -15,6 +15,7 @@ import HomeContainer from './components/HomeContainer'
 import Login from './components/Login';
 import SearchQuote from './components/SearchQuote';
 import Register from './components/Register';
+import RandomQuote from './components/RandomQuote'
 
 import clsx from 'clsx';
 import Container from '@material-ui/core/Container';
@@ -23,7 +24,6 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -33,8 +33,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import HomeIcon from '@material-ui/icons/Home';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import LoopIcon from '@material-ui/icons/Loop';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
@@ -165,24 +166,30 @@ const App = (props) => {
                 {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
               </IconButton>
             </div>
-            <Divider />
             <List>
-              {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
+
+                <ListItem button component={Link} to="/">
+                  <ListItemIcon><HomeIcon /></ListItemIcon>
+                  <ListItemText primary="Home" />
                 </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <List>
-              {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
+
+                <ListItem button component={Link} to="/randomQuote">
+                  <ListItemIcon><LoopIcon /></ListItemIcon>
+                  <ListItemText primary="Random Quote" />
                 </ListItem>
-              ))}
+
+                <ListItem button component={Link} to="/register">
+                  <ListItemIcon><AccountCircleIcon /></ListItemIcon>
+                  <ListItemText primary="Register" />
+                </ListItem>
+
+                <ListItem button component={Link} to="/login">
+                  <ListItemIcon><AccountCircleIcon /></ListItemIcon>
+                  <ListItemText primary="Login" />
+                </ListItem>
+
             </List>
+
           </Drawer>
 
           <main
@@ -196,6 +203,7 @@ const App = (props) => {
               <Route exact path='/login' component={Login} />
               <Route exact path='/Register' component={Register} />
               <ProtectedRoute exact path='/SearchQuote' component={SearchQuote} />
+              <ProtectedRoute exact path='/randomQuote' component={RandomQuote} />
               <ProtectedRoute exact path='/category/:category' component={Quote} />
             </Container>
           </main>

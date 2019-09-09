@@ -17,9 +17,9 @@ import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
-const QUOTE_QUERY = gql`
-  query QuoteQuery($category: String) {
-    quoteForCategory(category: $category) {
+const RANDOM_QUERY = gql`
+  query RandomQuote {
+    randomQuote{
       id
       value
       icon_url
@@ -56,22 +56,24 @@ const useStyles = makeStyles(theme => ({
 const Quote = (props) => {
   const classes = useStyles();
 
-  let { category } = props.match.params;
   return (
     <Fragment>
-      <Query query={QUOTE_QUERY} variables={{ category }}>
+      <Query query={RANDOM_QUERY}>
         {
           ({ loading, error, data }) => {
             if (loading) return <h4>Loading...</h4>
             if (error) console.log(error)
             console.log(data)
-            const { value, icon_url, updated_at } = data.quoteForCategory
+            const { value, icon_url, updated_at } = data.randomQuote
 
             return <Fragment>
+              <Typography variant="h3">
+                Here's your random quote!
+                </Typography>
 
               <Card className={classes.card}>
                 <CardHeader
-                  avatar={<img src={icon_url} alt=""/>}
+                  avatar={<img src={icon_url} alt="" />}
                   action={
                     <IconButton aria-label="settings">
                       <MoreVertIcon />
@@ -87,17 +89,17 @@ const Quote = (props) => {
                 </CardContent>
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">
-                      <FavoriteIcon />
-                    </IconButton>
-                    <IconButton aria-label="share">
-                      <ShareIcon />
-                    </IconButton>
+                    <FavoriteIcon />
+                  </IconButton>
+                  <IconButton aria-label="share">
+                    <ShareIcon />
+                  </IconButton>
 
                 </CardActions>
 
               </Card>
               <Typography variant="h4">
-          Browse some more categories if Chuck's magnificence
+                Browse some more categories if Chuck's magnificence
         </Typography>
               <CategoriesList />
             </Fragment>
