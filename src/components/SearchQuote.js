@@ -35,7 +35,7 @@ query searchQuote($search: String) {
 }
 `;
 
-function SearchQuote(props) {
+const  SearchQuote = (props) => {
   const classes = useStyles();
 
   const [searchQuote, { data, error, loading }] = useLazyQuery(SEARCH_QUOTE);

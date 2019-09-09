@@ -15,7 +15,7 @@ mutation LoginUser($email: String, $password: String) {
 }
 `;
 
-function Login(props) {
+const Login = (props) => {
 
   const [values, setValues] = React.useState(false)
 
@@ -36,7 +36,6 @@ function Login(props) {
     localStorage.setItem('token', data.login.token)
     return <Redirect to="/" />
   }
-
 
   return (
     <div>
