@@ -49,7 +49,6 @@ const middlewareLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-
 const client = new ApolloClient({
   link: middlewareLink.concat(httpLink),
   cache: new InMemoryCache()
