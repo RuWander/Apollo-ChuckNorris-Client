@@ -13,10 +13,10 @@ const CATEGORY_QUERY = gql`
 const CategoriesList = (props) => {
 
   const { data, loading, error } = useQuery(CATEGORY_QUERY)
-  function logout() {
-      localStorage.removeItem('token')
-      props.history.push("/login");
-  }
+  // function logout() {
+  //     localStorage.removeItem('token')
+  //     props.history.push("/login");
+  // }
 
   if (loading) {
     return <h4>Loading..</h4>

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
@@ -6,8 +6,7 @@ import { ApolloLink } from 'apollo-link';
 
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Link, Redirect } from 'react-router-dom';
-import CategoriesList from './components/CategoriesList'
+import { Link } from 'react-router-dom';
 import './App.css';
 import Quote from './components/Quote';
 import { ProtectedRoute } from "./components/protected.route";
@@ -59,15 +58,15 @@ const useStyles = makeStyles(theme => ({
 function App(props) {
   const classes = useStyles();
 
-  const isloggedIn = () => {
-    return localStorage.getItem('token') !== null ? true : false
-  }
+  // const isloggedIn = () => {
+  //   return localStorage.getItem('token') !== null ? true : false
+  // }
 
-  function logout() {
-    localStorage.removeItem('token')
-    // props.history.push("/login");
-    return <Redirect to="/logout" />
-  }
+  // function logout() {
+  //   localStorage.removeItem('token')
+  //   // props.history.push("/login");
+  //   return <Redirect to="/logout" />
+  // }
 
   return (
     <ApolloProvider client={client}>

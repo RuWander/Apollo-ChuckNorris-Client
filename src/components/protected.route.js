@@ -2,8 +2,8 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
 export const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
-  console.log('testing')
-  console.log(localStorage.getItem('token') !== null)
+  // console.log('testing')
+  // console.log(localStorage.getItem('token') !== null)
   return (
     <Route
       path={path}

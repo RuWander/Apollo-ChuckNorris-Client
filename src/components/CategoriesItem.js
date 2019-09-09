@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function CategoriesItem({ category }) {
   const classes = useStyles();
-  console.log(category);
+  // console.log(category);
   return (
 
     <Chip
