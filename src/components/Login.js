@@ -2,6 +2,7 @@ import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { Redirect } from 'react-router-dom';
+import Authentication from './Auth';
 
 const LOGIN_USER = gql`
 mutation LoginUser($email: String, $password: String) {
@@ -34,6 +35,7 @@ const Login = (props) => {
 
   if (data) {
     localStorage.setItem('token', data.login.token)
+    Authentication.authenticate(() => console.log('auth done'))
     return <Redirect to="/" />
   }
 
